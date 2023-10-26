@@ -31,8 +31,15 @@ jobs:
     - name: Update models
       run: |
         python fetch-models.py
-    - name: Commit change
+    - name: Check for changes
+      id: changed
       run: |
-        - uses: EndBug/add-and-commit@v7
-        with:
-          default_author: github_actions
+        git diff --quiet HEAD || echo "::set-output name=has_changed::true"
+    - name: Commit changes
+      uses: peter-evans/commit-comment@v1
+      if: steps.changed.outputs.has_changed == 'true'
+      with:
+        body: |
+          ${{ github.workflow }} has automatically committed changes
+        add: .
+        commit_message: "Commit changes from GitHub Actions"
