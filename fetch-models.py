@@ -11,7 +11,7 @@ SYSTEM \"""
   modelTemplate = modelTemplate.format(prompt=prompt, filename=filename)
 
   with open(filename, "w") as f:
-    f.write(modelTemplate)
+    f.write("./modles" + modelTemplate)
 
 def capitalizeWords(act):
   return ''.join(c for c in act if c.isalnum())
